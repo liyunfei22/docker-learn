@@ -146,9 +146,29 @@ rm -rf /var/lib/docker
 通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 `<仓库名>:<标签>` 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 `latest` 作为默认标签。
 
 仓库名经常以 两段式路径 形式出现，比如 jwilder/nginx-proxy，前者往往意味着 Docker Registry 多用户环境下的用户名，后者则往往是对应的软件名。
-![cangku](/images/cangku.png)s
+
+![cangku](/images/cangku.png)
+
+[可能是把Docker的概念讲的最清楚的一篇文章](http://dockone.io/article/6051)
+
+
 
 ## docker 是怎样工作的
+
+Docker Engine是一个C/S架构的应用程序，主要包含下面几个组件；
+
+常驻后台进程Dockerd
+一个用来和Dockerd交互的REST API Server
+命令行CLI接口，通过和REST API进行交互
+
+![ss](/images/d62a6059252dd42a5f9be61dc52818b0c8eab88b.png)
+
+Docker使用了C/S体系架构，Docker客户端与Docker守护进程通信，Docker守护进程负责构建，运行和分发Docker容器。
+Docker客户端和守护进程使用REST API通过UNIX套接字或网络接口进行通信。
+
+![ss](/images/c2fdfc039245d68881eae9196cd13e1bd31b24bf.png)
+
+[Docker 架构分解](https://www.cnblogs.com/zuxing/articles/8717415.html)
 
 ## Docker基础命令操作
 
@@ -165,6 +185,7 @@ docker info #显示docker的系统信息，包括镜像和容器的数量
 # docker [命令] --help
 $ docker pull --help
 ```
+
 ```shell
 Usage:  docker pull [OPTIONS] NAME[:TAG|@DIGEST]
 
@@ -181,12 +202,14 @@ Options:
 ## docker镜像相关操作
 
 Docker 运行容器前需要本地存在对应的镜像，如果本地不存在该镜像，Docker 会从镜像仓库下载该镜像。
+
 ```shell
 docker search # 搜索镜像
 docker pull #下载镜像 docker image pull
 docker images # 查看所有本地主机上的镜像 docker image ls
 docker rmi # 删除镜像 docker image rm
 ```
+
 ### 搜索官方仓库镜像
 
 ```shell
@@ -220,6 +243,11 @@ docker.io/library/centos:latest
 
 ``` docker image ls ```  
 ``` docker images ```
+```shell
+-a, --all Show all images (default hides intermediate images) #列出
+所有镜像
+-q, --quiet Only show numeric IDs # 只显示镜像的id
+```
 
 ```shell
 $ docker images
@@ -241,7 +269,8 @@ centos                            latest    300e315adb2f   9 months ago        2
 
 #### 删除本地镜像
 
-```docker rmi <镜像1> [<镜像2> ...]```
+```docker rmi [OPTIONS] IMAGE [IMAGE...]```
+```  -f, --force      Force removal of the image```
 `<镜像>` 可以是 `镜像ID`、`镜像名` 或者 `镜像摘要`
 
 ```shell
@@ -343,6 +372,7 @@ docker run --name web2 -d -p 8089:80 nginx:v2
 ```
 
 ## docker 容器相关操作
+
 ```shell
 docker run 镜像id # 新建容器并启动
 docker ps # 列出所有运行的容器 docker container list
@@ -352,5 +382,23 @@ docker restart 容器id #重启容器
 docker stop 容器id #停止当前正在运行的容器
 docker kill 容器id #强制停止当前容器
 ```
-
+#### 新建并启动rongq
+#### 列出所有运行的容器
+```shell
+#docker ps命令 #列出当前正在运行的容器
+-a, --all Show all containers (default shows just running)
+-n, --last int Show n last created containers (includes all states) (default -1)
+-q, --quiet Only display numeric IDs
+docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED              STATUS                          PORTS                                   NAMES
+32ac47a2d0a6   nginx         "/docker-entrypoint.…"   22 seconds ago       Up 21 seconds                   0.0.0.0:8088->80/tcp, :::8088->80/tcp   webserver
+d46790b9f194   hello-world   "/hello"                 About a minute ago   Exited (0) About a minute ago                                           crazy_fermat
+```
+### 删除容器
+```shell
+docker rm [OPTIONS] CONTAINER [CONTAINER...]
+  -f, --force     Force the removal of a running container (uses SIGKILL)
+  # 强制删除运行中的容器
+```
+###
 ## REPOSITORY
