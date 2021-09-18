@@ -1,4 +1,8 @@
-# docker [官网](https://www.docker.com/)
+# docker 
+[官网](https://www.docker.com/)
+## 容器化
+ > 容器化意味着封装或打包软件代码及其所有依赖项，以便它可以在任何基础架构上统一且一致地运行。
+
 
 ## 什么是docker
 
@@ -157,9 +161,11 @@ rm -rf /var/lib/docker
 
 Docker Engine是一个C/S架构的应用程序，主要包含下面几个组件；
 
-常驻后台进程Dockerd
-一个用来和Dockerd交互的REST API Server
-命令行CLI接口，通过和REST API进行交互
+Docker 守护程序： 守护程序（dockerd）是一个始终在后台运行并等待来自客户端的命令的进程。守护程序能够管理各种 Docker 对象。
+
+Docker 客户端： 客户端（docker）是一个命令行界面程序，主要负责传输用户发出的命令。
+
+REST API： REST API 充当守护程序和客户端之间的桥梁。使用客户端发出的任何命令都将通过 API 传递，最终到达守护程序。
 
 ![ss](/images/d62a6059252dd42a5f9be61dc52818b0c8eab88b.png)
 
@@ -184,9 +190,7 @@ docker info #显示docker的系统信息，包括镜像和容器的数量
 ```shell
 # docker [命令] --help
 $ docker pull --help
-```
 
-```shell
 Usage:  docker pull [OPTIONS] NAME[:TAG|@DIGEST]
 
 Pull an image or a repository from a registry
