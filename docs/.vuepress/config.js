@@ -22,6 +22,10 @@ module.exports = {
           {text: 'container', link: '/container/'}
         ],
       },
+      {
+        text: '实践案例',
+        link: '/action/'
+      }
     ],
     darkMode: true,
     lastUpdated: false,

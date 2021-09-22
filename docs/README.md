@@ -1,8 +1,10 @@
-# docker 
-[官网](https://www.docker.com/)
-## 容器化
- > 容器化意味着封装或打包软件代码及其所有依赖项，以便它可以在任何基础架构上统一且一致地运行。
+# docker
 
+[官网](https://www.docker.com/)
+
+## 容器化
+
+ > 容器化意味着封装或打包软件代码及其所有依赖项，以便它可以在任何基础架构上统一且一致地运行。
 
 ## 什么是docker
 
@@ -155,8 +157,6 @@ rm -rf /var/lib/docker
 
 [可能是把Docker的概念讲的最清楚的一篇文章](http://dockone.io/article/6051)
 
-
-
 ## docker 是怎样工作的
 
 Docker Engine是一个C/S架构的应用程序，主要包含下面几个组件；
@@ -247,6 +247,7 @@ docker.io/library/centos:latest
 
 ``` docker image ls ```  
 ``` docker images ```
+
 ```shell
 -a, --all Show all images (default hides intermediate images) #列出
 所有镜像
@@ -274,7 +275,7 @@ centos                            latest    300e315adb2f   9 months ago        2
 #### 删除本地镜像
 
 ```docker rmi [OPTIONS] IMAGE [IMAGE...]```
-```  -f, --force      Force removal of the image```
+```-f, --force      Force removal of the image```
 `<镜像>` 可以是 `镜像ID`、`镜像名` 或者 `镜像摘要`
 
 ```shell
@@ -386,8 +387,11 @@ docker restart 容器id #重启容器
 docker stop 容器id #停止当前正在运行的容器
 docker kill 容器id #强制停止当前容器
 ```
+
 #### 新建并启动rongq
+
 #### 列出所有运行的容器
+
 ```shell
 #docker ps命令 #列出当前正在运行的容器
 -a, --all Show all containers (default shows just running)
@@ -398,11 +402,19 @@ CONTAINER ID   IMAGE         COMMAND                  CREATED              STATU
 32ac47a2d0a6   nginx         "/docker-entrypoint.…"   22 seconds ago       Up 21 seconds                   0.0.0.0:8088->80/tcp, :::8088->80/tcp   webserver
 d46790b9f194   hello-world   "/hello"                 About a minute ago   Exited (0) About a minute ago                                           crazy_fermat
 ```
+
 ### 删除容器
+
 ```shell
 docker rm [OPTIONS] CONTAINER [CONTAINER...]
   -f, --force     Force the removal of a running container (uses SIGKILL)
   # 强制删除运行中的容器
 ```
-###
+
+### 停止
+
 ## REPOSITORY
+
+## dockerfile
+
+## 数据卷
