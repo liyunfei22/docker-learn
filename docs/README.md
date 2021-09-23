@@ -272,7 +272,7 @@ centos                            latest    300e315adb2f   9 months ago        2
 - 镜像体积查看```docker system df```
 - 显示镜像摘要：```docker image ls --digests```
 
-#### 删除本地镜像
+### 删除本地镜像
 
 ```docker rmi [OPTIONS] IMAGE [IMAGE...]```
 ```-f, --force      Force removal of the image```
@@ -361,6 +361,10 @@ docker run --name web2 -d -p 8089:80 nginx:v2
 
 ![image](/images/image.png)
 
+### docker build
+
+通过dockerfile创建容器镜像
+
 ### 配置镜像加速
 
 对于使用 macOS 的用户，在任务栏点击 Docker Desktop 应用图标 -> Perferences，在左侧导航菜单选择 Docker Engine，在右侧像下边一样编辑 json 文件。修改完成之后，点击 Apply & Restart 按钮，Docker 就会重启并应用配置的镜像地址了。
@@ -378,22 +382,27 @@ docker run --name web2 -d -p 8089:80 nginx:v2
 
 ## docker 容器相关操作
 
+容器是基于镜像创建的可运行实例，并且单独存在，一个镜像可以创建出多个容器。运行容器化环境时，实际上是在容器内部创建该文件系统的读写副本。 这将添加一个容器层，该层允许修改镜像的整个副本。
+![docker 容器](/images/docker-container.png)
+
+### 容器的生命周期
+
+容器的生命周期是容器可能处于的状态
+
+1. created：初建状态
+2. running：运行状态
+3. stopped：停止状态
+4. paused： 暂停状态
+5. deleted：删除状态
+
+![docker 容器生命周期](/images/20200503135132719.png)
+
+### 列出所有运行的容器
+
 ```shell
-docker run 镜像id # 新建容器并启动
-docker ps # 列出所有运行的容器 docker container list
-docker rm # 容器id 删除指定容器
-docker start # 容器id #启动容器
-docker restart 容器id #重启容器
-docker stop 容器id #停止当前正在运行的容器
-docker kill 容器id #强制停止当前容器
-```
+# docker ps命令 #列出当前正在运行的容器
+# docker container ls
 
-#### 新建并启动rongq
-
-#### 列出所有运行的容器
-
-```shell
-#docker ps命令 #列出当前正在运行的容器
 -a, --all Show all containers (default shows just running)
 -n, --last int Show n last created containers (includes all states) (default -1)
 -q, --quiet Only display numeric IDs
@@ -401,6 +410,60 @@ docker ps -a
 CONTAINER ID   IMAGE         COMMAND                  CREATED              STATUS                          PORTS                                   NAMES
 32ac47a2d0a6   nginx         "/docker-entrypoint.…"   22 seconds ago       Up 21 seconds                   0.0.0.0:8088->80/tcp, :::8088->80/tcp   webserver
 d46790b9f194   hello-world   "/hello"                 About a minute ago   Exited (0) About a minute ago                                           crazy_fermat
+```
+
+### 启动容器
+
+```shell
+# docker create命令创建的容器处于停止状态
+docker create -it --name=busybox busybox
+Unable to find image 'busybox:latest' locally
+latest: Pulling from library/busybox
+24fb2886d6f6: Pull complete
+Digest: sha256:52f73a0a43a16cf37cd0720c90887ce972fe60ee06a687ee71fb93a7ca601df7
+Status: Downloaded newer image for busybox:latest
+e055978e44bff2ce1b2cc5e6dbcf3ea1164738cd7d038e252429355c478ef906
+docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED          STATUS    PORTS     NAMES
+e055978e44bf   busybox   "sh"      26 seconds ago   Created             busybox
+# 使用docker start命令基于已经创建好的容器直接启动
+docker start busybox
+busybox
+docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED              STATUS         PORTS     NAMES
+e055978e44bf   busybox   "sh"      About a minute ago   Up 7 seconds             busybox
+# 使用docker run命令直接基于镜像新建一个容器并启动，相当于先执行docker create命令从镜像创建容器，然后再执行docker start命令启动容器。
+```
+
+- -i 保持标准输入打开，用于控制台交互
+
+- -t 分配一个tty伪终端，支持终端登录
+- --name='Name' 容器名字
+- -d 后台运行
+  
+- -p 主机端口:容器端口
+
+### 终止容器
+
+```shell
+# `暂停`容器
+docker pause CONTAINER [CONTAINER...]
+# `停止`容器
+docker stop [OPTIONS] CONTAINER [CONTAINER...]
+docker kill
+```
+
+> stop 命令通过发送信号SIGTERM 来正常关闭容器。如果容器在一定时间内没有停止运行，则会发出 SIGKILL 信号，该信号会立即关闭容器。
+> docker kill 直接发送 SIGKILL 信号
+
+### 进入容器
+
+```shell
+docker exec --help
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Run a command in a running container
 ```
 
 ### 删除容器
@@ -411,10 +474,69 @@ docker rm [OPTIONS] CONTAINER [CONTAINER...]
   # 强制删除运行中的容器
 ```
 
-### 停止
+### 导入容器
+
+```shell
+# 使用docker export CONTAINER命令导出一个容器到文件，不管此时该容器是否处于运行中的状态。
+# 导出容器前我们先进入容器，创建一个文件，
+docker exec -it busybox2 sh
+cd /tmp && touch test
+docker export busybox2 > busybox.tar
+ls
+busybox.tar       docs              node_modules      package-lock.json package.json      yarn.lock
+# 使用docker import命令导入容器 
+# busybox.tar 被导入成为新的镜像，镜像名称为 busybox:test
+docker import busybox.tar busybox:test
+sha256:55ebe2ae97c68d9cd22f4f102e3235bcba634dc6ab3bbffa5e33aa893e7b38f1
+# 使用docker run命令启动
+docker run -it busybox:test sh
+```
+
+### 重命名容器
+
+```shell
+docker rename
+```
+
+### 查看容器详细信息
+
+```shell
+docker inspect
+```
+
+### 实时监控容器资源数据
+
+```shell
+docker stats
+```
+
+### 容器与宿主机之间的数据拷贝
+
+```shell
+docker cp
+docker cp /Users/liyf/learn/docker/docker-docs busybox2:/test123
+ mac@bogon  ~/learn/docker/docker-docs   master ±  ls
+busybox.tar       docs              node_modules      package-lock.json package.json      yarn.lock
+ mac@bogon  ~/learn/docker/docker-docs   master ±  docker exec -it busybox2 sh
+/ # ls
+bin       dev       etc       home      proc      root      sys       test.txt  test123   tmp       usr       var
+/ # cd test123/
+/test123 # ls
+busybox.tar        docs               node_modules       package-lock.json  package.json       yarn.lock
+/test123 #
+```
 
 ## REPOSITORY
 
 ## dockerfile
+
+Dockerfile 是一个包含了用户所有构建命令的文本。通过docker build命令可以从 Dockerfile 生成镜像。
+使用 Dockerfile 构建镜像具有以下特性：
+
+- Dockerfile 的每一行命令都会生成一个独立的镜像层，并且拥有唯一的 ID；
+
+- Dockerfile 的命令是完全透明的，通过查看 Dockerfile 的内容，就可以知道镜像是如何一步步构建的；
+
+- Dockerfile 是纯文本的，方便跟随代码一起存放在代码仓库并做版本管理
 
 ## 数据卷

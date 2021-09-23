@@ -34,3 +34,44 @@ Commands:
 
 Run 'docker container COMMAND --help' for more information on a command.
 ```
+
+```shell
+docker run 镜像id # 新建容器并启动
+docker ps # 列出所有运行的容器 docker container list
+docker rm # 容器id 删除指定容器
+docker start # 容器id #启动容器
+docker restart 容器id #重启容器
+docker stop 容器id #停止当前正在运行的容器
+docker kill 容器id #强制停止当前容器
+```
+
+## 容器操作
+
+[feeeCodeCamp](https://chinese.freecodecamp.org/news/the-docker-handbook/)
+
+```shell
+ mac@bogon  ~/daojia/jz-fe-clean/clean-category-mid   dp74  docker ps
+CONTAINER ID   IMAGE                 COMMAND                  CREATED              STATUS         PORTS                                   NAMES
+f9c05da4f7a1   fhsinchy/hello-dock   "/docker-entrypoint.…"   About a minute ago   Up 3 seconds   0.0.0.0:8088->80/tcp, :::8088->80/tcp   hello-word
+ mac@bogon  ~/daojia/jz-fe-clean/clean-category-mid   dp74  docker rname hello-word hello-word2
+docker: 'rname' is not a docker command.
+See 'docker --help'
+ ✘ mac@bogon  ~/daojia/jz-fe-clean/clean-category-mid   dp74  docker rename hello-word hello-word2
+ mac@bogon  ~/daojia/jz-fe-clean/clean-category-mid   dp74  docker ps
+CONTAINER ID   IMAGE                 COMMAND                  CREATED         STATUS              PORTS                                   NAMES
+f9c05da4f7a1   fhsinchy/hello-dock   "/docker-entrypoint.…"   2 minutes ago   Up About a minute   0.0.0.0:8088->80/tcp, :::8088->80/tcp   hello-word2
+ mac@bogon  ~/daojia/jz-fe-clean/clean-category-mid   dp74  docker pause hello-word2
+hello-word2
+ mac@bogon  ~/daojia/jz-fe-clean/clean-category-mid   dp74  docker ps
+CONTAINER ID   IMAGE                 COMMAND                  CREATED         STATUS                  PORTS                                   NAMES
+f9c05da4f7a1   fhsinchy/hello-dock   "/docker-entrypoint.…"   5 minutes ago   Up 4 minutes (Paused)   0.0.0.0:8088->80/tcp, :::8088->80/tcp   hello-word2
+ mac@bogon  ~/daojia/jz-fe-clean/clean-category-mid   dp74  docker unpause hello-word2
+hello-word2
+ mac@bogon  ~/daojia/jz-fe-clean/clean-category-mid   dp74  docker stop hello-word2
+hello-word2
+ mac@bogon  ~/daojia/jz-fe-clean/clean-category-mid   dp74  docker start hello-word
+Error response from daemon: No such container: hello-word
+Error: failed to start containers: hello-word
+ ✘ mac@bogon  ~/daojia/jz-fe-clean/clean-category-mid   dp74  docker start hello-word2
+hello-word2
+```

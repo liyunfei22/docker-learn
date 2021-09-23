@@ -16,3 +16,5 @@ Commands:
   tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
 
 ```
+镜像是一个只读的 Docker 容器模板，包含启动容器所需要的所有文件系统结构和内容。简单来讲，镜像是一个特殊的文件系统，它提供了容器运行时所需的程序、软件库、资源、配置等静态数据。即镜像不包含任何动态数据，镜像内容在构建后不会被改变。
+

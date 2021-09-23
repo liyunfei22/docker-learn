@@ -22,6 +22,6 @@
 
 [容器的使用：容器的生命周期及基本命令](https://blog.csdn.net/qq_23845067/article/details/105902834)
 
-[11](https://www.jianshu.com/p/442b726f8cca)
+[Docker容器的生命周期](https://www.jianshu.com/p/442b726f8cca)
 
 [docker 入门教程](https://chinese.freecodecamp.org/news/the-docker-handbook/)
