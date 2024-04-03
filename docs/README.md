@@ -538,5 +538,8 @@ Dockerfile 是一个包含了用户所有构建命令的文本。通过docker bu
 - Dockerfile 的命令是完全透明的，通过查看 Dockerfile 的内容，就可以知道镜像是如何一步步构建的；
 
 - Dockerfile 是纯文本的，方便跟随代码一起存放在代码仓库并做版本管理
-
+FROM 指定基础镜像
+FROM 就是指定 基础镜像，因此一个 Dockerfile 中 FROM 是必备的指令，并且必须是第一条指令。
+在 Docker Hub 上有非常多的高质量的官方镜像，有可以直接拿来使用的服务类的镜像，如 nginx、redis、mongo、mysql、httpd、php、tomcat 等；也有一些方便开发、构建、运行各种语言应用的镜像，如 node、openjdk、python、ruby、golang 等。可以在其中寻找一个最符合我们最终目标的镜像为基础镜像进行定制。
 ## 数据卷
+参考数据卷
